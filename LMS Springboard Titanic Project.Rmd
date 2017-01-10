@@ -1,0 +1,86 @@
+---
+title: 'Data Wrangling Exercise 2: Dealing with missing values'
+author: "Louis MS"
+date: "10 January 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# library key packages
+library(dplyr)
+library(tidyr)
+
+# read in CSV file
+titanic_original <- read.csv("titanic_original.csv")
+
+```
+
+## Introduction & Method
+
+the data set 'titanic_original.csv' is a data frame with 1310 observations across 15 variables.  In this exercise the data has missing values that require filling. Missing values will be replaced in the following steps.
+
+### Step 1 
+Replace all missing values in 'embarked' with 'S'.
+
+```{r}
+
+titanic_st1 <- titanic_original
+
+titanic_st1$embarked[is.na(titanic_st1$embarked)] <- "S"
+titanic_st1$embarked <- sub("^$", "S", titanic_st1$embarked)
+
+unique(titanic_st1$embarked)
+
+```
+
+
+### Step 2
+All missing values in 'Age' will be replaced with the mean of all values in 'Age'.
+
+```{r}
+
+titanic_st2 <- titanic_st1
+
+mean(titanic_st2$age, na.rm=TRUE)
+# age column mean is 29.88113
+
+median(titanic_st2$age, na.rm=TRUE)
+# age column median is 28
+
+titanic_st2$age[is.na(titanic_original$age)] <- mean(titanic_st2$age, na.rm=TRUE)
+```
+
+This code has replaced missing age values with the mean of all other age values which came out to be 29.88113.  This decimal number is an unusual number to put in for age, so it maybe more appropriate to replace missing age values with the median value instead as this is an integer (28).
+
+### Step 3
+Replace missing values in 'boat' column with 'None' or 'NA' string.
+
+```{r}
+
+titanic_st3 <- titanic_st2
+titanic_st3$boat <- sub("^$", "None", titanic_st3$boat)
+
+```
+
+### Step 4
+Create a new column 'has_cabin_number' with numerical definition '1' or '0'.
+
+```{r}
+
+titanic_st4 <- titanic_st3
+titanic_st4$has_cabin_number <- ifelse(titanic_st4$cabin == "", 0, 1)
+
+```
+
+### Step 5
+Read and write cleanded dataset to 'titanic_clean.csv'.
+
+```{r}
+
+titanic_clean <- titanic_st4
+write.csv(titanic_clean, file = "titanic_clean.csv")
+```
+
+Please note that it is advisable to not create the data frames titanic_st1:4 as these are only slightly varied duplicates of their previous.  I have split them out into their steps for clarity in this exercise.

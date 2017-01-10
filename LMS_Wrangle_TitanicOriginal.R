@@ -49,3 +49,4 @@ titanic_st4$has_cabin_number <- ifelse(titanic_st4$cabin == "", 0, 1)
 # step 5: read & write cleaned data set to 'titanic_clean.csv'
 
 titanic_clean <- titanic_st4
+write.csv(titanic_clean, file = "titanic_clean.csv")
