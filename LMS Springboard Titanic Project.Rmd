@@ -24,7 +24,7 @@ the data set 'titanic_original.csv' is a data frame with 1310 observations acros
 ### Step 1 
 Replace all missing values in 'embarked' with 'S'.
 
-```{r}
+```{r Step 1, include=TRUE}
 
 titanic_st1 <- titanic_original
 
@@ -39,7 +39,7 @@ unique(titanic_st1$embarked)
 ### Step 2
 All missing values in 'Age' will be replaced with the mean of all values in 'Age'.
 
-```{r}
+```{r Step 2, include=TRUE}
 
 titanic_st2 <- titanic_st1
 
@@ -57,7 +57,7 @@ This code has replaced missing age values with the mean of all other age values 
 ### Step 3
 Replace missing values in 'boat' column with 'None' or 'NA' string.
 
-```{r}
+```{r Step 3, include=TRUE}
 
 titanic_st3 <- titanic_st2
 titanic_st3$boat <- sub("^$", "None", titanic_st3$boat)
@@ -67,7 +67,7 @@ titanic_st3$boat <- sub("^$", "None", titanic_st3$boat)
 ### Step 4
 Create a new column 'has_cabin_number' with numerical definition '1' or '0'.
 
-```{r}
+```{r Step 4, include=TRUE}
 
 titanic_st4 <- titanic_st3
 titanic_st4$has_cabin_number <- ifelse(titanic_st4$cabin == "", 0, 1)
@@ -77,7 +77,7 @@ titanic_st4$has_cabin_number <- ifelse(titanic_st4$cabin == "", 0, 1)
 ### Step 5
 Read and write cleanded dataset to 'titanic_clean.csv'.
 
-```{r}
+```{r Step 5, include=TRUE}
 
 titanic_clean <- titanic_st4
 write.csv(titanic_clean, file = "titanic_clean.csv")
